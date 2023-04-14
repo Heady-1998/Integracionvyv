@@ -15,10 +15,10 @@ class ModelUser
         }
     }
 
-    static async createUserModel(nombres,email,fechaNacimiento,rol)
+    static async createUserModel(nombres,email,fechaNacimiento,rol,password)
     {
         try{
-            var password = generador_password()
+
             var conn = await connDB().promise();
             var datos = await conn.query("insert into usuario(nombres, email,password,fechaNacimiento, fk_rol) " +
                 "values ('"+nombres+"','"+email+"',MD5('"+password+"'),'"+fechaNacimiento+"',"+rol+");")
@@ -29,6 +29,9 @@ class ModelUser
             return false
         }
     }
+
+
+
 }
 
 module.exports = ModelUser

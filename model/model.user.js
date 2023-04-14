@@ -1,4 +1,5 @@
 const connDB = require("../config/conn")
+const generador_password = require("../config/generador_password")
 class ModelUser
 {
     static async loginUserModel(email,password)
@@ -11,6 +12,21 @@ class ModelUser
         }catch (e) {
             console.log(e)
             return []
+        }
+    }
+
+    static async createUserModel(nombres,email,fechaNacimiento,rol)
+    {
+        try{
+            var password = generador_password()
+            var conn = await connDB().promise();
+            var datos = await conn.query("insert into usuario(nombres, email,password,fechaNacimiento, fk_rol) " +
+                "values ('"+nombres+"','"+email+"',MD5('"+password+"'),'"+fechaNacimiento+"',"+rol+");")
+            await conn.end()
+            return true
+        }catch (e) {
+            console.log(e)
+            return false
         }
     }
 }

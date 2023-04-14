@@ -12,6 +12,11 @@ class ControllerUser
          }
 
     }
+
+    static async createUserController(nombres,email,fechaNacimiento,rol)
+    {
+        return  await ModelUser.createUserModel(nombres,email,fechaNacimiento,rol)
+    }
 }
 
 module.exports = ControllerUser

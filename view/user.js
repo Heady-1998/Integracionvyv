@@ -18,4 +18,19 @@ app.post("/login",async function (req,res)
     }
 })
 
+app.post("/createUser",async function (req,res)
+{
+    var datos = await ControllerUser.createUserController(req.body.nombres,req.body.email,req.body.fechaNacimiento,req.body.rol)
+
+    if(datos){
+        res.status(200).json({
+            msm: 'USUARIO CREADO CON EXITO'
+        })
+    }else{
+        res.status(400).json({
+            msm: 'NO SE PUEDO CREAR EL USUARIO'
+        })
+    }
+})
+
 module.exports = app

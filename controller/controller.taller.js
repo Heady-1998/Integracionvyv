@@ -5,6 +5,12 @@ class ControllerTaller
     {
         return await ModelTaller.readModelTallerActivos()
     }
+
+    static async readControllerParticipantesTaller()
+    {
+        return await ModelTaller.readParticipanteTaller()
+    }
+
     static async readControllerTallerInscriptosUsuario(email)
     {
         return await ModelTaller.readTallerInscriptosUsuario(email)
@@ -13,6 +19,11 @@ class ControllerTaller
     static async readControllerCarritoTaller(email)
     {
         return await ModelTaller.readCarritoTaller(email)
+    }
+
+    static async readControllerDetalleTaller(taller)
+    {
+        return await ModelTaller.readModelDetalleTaller(taller)
     }
 
 }

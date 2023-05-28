@@ -4,15 +4,15 @@ class ModelEvento
     static async readModelEventoActivos()
     {
         try{
-            var sql = "select E.idevento,E.costo,IF(ISNULL(E.foto_evento),'https://firebasestorage.googleapis.com/v0/b/ces-expres.appspot.com/o/descarga.jpg?alt=media'," +
-                "E.foto_evento) foto_evento,E.titulo,convert(E.fecha_inicio,char(150)) fecha_inicio," +
-                "convert(E.fecha_fin,char(150)) fecha_fin,E.calificacion," +
+            var sql = "select E.idevento as idCode,E.costo,IF(ISNULL(E.foto_evento),'https://firebasestorage.googleapis.com/v0/b/ces-expres.appspot.com/o/descarga.jpg?alt=media'," +
+                "E.foto_evento) foto,E.titulo,convert(E.fecha_inicio,char(150)) fechaI," +
+                "convert(E.fecha_fin,char(150)) fechaF,E.calificacion," +
                 "E.idarea_tecnologica,AT.nombre_area,E.idponente,concat(P.nombre,' ',P.apellido) ponente,P.url_curriculum " +
                 "from evento as E inner join area_tecnologica as AT on E.idarea_tecnologica = AT.idarea_tecnologica " +
                 "inner JOIN ponente as P on E.idponente = P.idponente " +
                 "where E.estado_evento = 1 and date(E.fecha_fin) >= date(now());"
 
-            console.log(sql)
+            //console.log(sql)
 
             var conn = await connDB().promise()
 
@@ -22,6 +22,29 @@ class ModelEvento
         }catch (e) {
             console.log(e)
             return []
+        }
+    }
+
+
+    static async readModelDetalleEvento(evento)
+    {
+        try{
+            var sql = "select E.idevento as idCode,'' detalles,E.calificacion calificacion," +
+                "IF(ISNULL(E.foto_evento),'https://firebasestorage.googleapis.com/v0/b/ces-expres.appspot.com/o/descarga.jpg?alt=media',E.foto_evento)  as foto,concat(E.fecha_inicio,' hasta ',time(E.fecha_fin)) as fecha," +
+                "E.titulo as titulo,E.costo as costo,concat(P.nombre,' ',P.apellido) ponente," +
+                "P.url_curriculum from evento as E inner join ponente P on E.idponente = P.idponente " +
+                "where E.idevento = "+evento
+
+            //console.log(sql)
+
+            var conn = await connDB().promise()
+
+            var datos = await conn.query(sql)
+            await conn.end()
+            return datos[0]
+        }catch (e) {
+            console.log(e)
+            return null
         }
     }
 
